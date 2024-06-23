@@ -19,13 +19,23 @@ const TodoApp: React.FC = observer(() => {
         }
     };
 
-    const handleUpdateTodo = () => {
+    const handleUpdateTodo = (id: number) => {
         if (editText) {
             todoStore.updateTodo(editId, editText);
             setEditId(0);
             setEditText('');
         }
     };
+
+    const handleEditButtonClick = (id: number, text: string) => {
+        setEditId(id);
+        setEditText(text);
+    };
+
+    const handleCancelEdit = () => {
+        setEditId(0);
+        setEditText('');
+    }
     
   return (
     <Container>
@@ -39,29 +49,37 @@ const TodoApp: React.FC = observer(() => {
             onKeyDown={(e) => e.key === 'Enter' && handleAddTodo()}
         />
         <Button onClick={handleAddTodo}>Add task</Button>
-
         <List>
-            {todoStore.todos.map((todo) => (
-                <ListItem key={todo.id}>
-                    <Checkbox checked={todo.completed} onChange={() => todoStore.toggleTodo(todo.id)}/>
-                    {editId === todo.id ? (
-                        <TextField
-                            label="Edit task"
-                            value={editText}
-                            onChange={(e) => setEditText(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleUpdateTodo()}
-                        />
-                    ) : (
-                        <ListItemText primary={todo.text} onClick={() => setEditId(todo.id)} style={{ textDecoration: todo.completed ? 'line-through' : 'none'}}/>
-                    )}
-                    <IconButton edge="end" onClick={() => todoStore.deleteTodo(todo.id)}>
-                        <DeleteIcon />
-                    </IconButton>
-                </ListItem>
-            ))}
-        </List>
+        {todoStore.todos.map((todo) => (
+          <ListItem key={todo.id}>
+            <Checkbox checked={todo.completed} onChange={() => todoStore.toggleTodo(todo.id)} />
+            {editId === todo.id ? (
+              <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                <TextField
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleUpdateTodo(todo.id)}
+                  fullWidth
+                />
+                <Button onClick={() => handleUpdateTodo(todo.id)}>Save</Button>
+                <Button onClick={handleCancelEdit}>Cancel</Button>
+              </div>
+            ) : (
+              <ListItemText primary={todo.text} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }} />
+            )}
+            {editId !== todo.id && (
+              <IconButton edge="end" onClick={() => handleEditButtonClick(todo.id, todo.text)}>
+                <EditIcon />
+              </IconButton>
+            )}
+            <IconButton edge="end" onClick={() => todoStore.deleteTodo(todo.id)}>
+              <DeleteIcon />
+            </IconButton>
+          </ListItem>
+        ))}
+      </List>
     </Container>
-  )
-})
+  );
+});
 
-export default TodoApp
+export default TodoApp;
