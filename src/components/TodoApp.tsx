@@ -52,7 +52,7 @@ const TodoApp: React.FC = observer(() => {
                             onKeyDown={(e) => e.key === 'Enter' && handleUpdateTodo()}
                         />
                     ) : (
-                        <ListItem onClick={() => setEditId(todo.id)} style={{ textDecoration: todo.completed ? 'line-through' : 'none'}}/>
+                        <ListItemText primary={todo.text} onClick={() => setEditId(todo.id)} style={{ textDecoration: todo.completed ? 'line-through' : 'none'}}/>
                     )}
                     <IconButton edge="end" onClick={() => todoStore.deleteTodo(todo.id)}>
                         <DeleteIcon />

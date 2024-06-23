@@ -12,10 +12,19 @@ class TodoStore {
 
     constructor() {
         makeAutoObservable(this);
+        this.loadTodos();
     }
+
+    loadTodos = () => {
+        const todos = localStorage.getItem('todos');
+        if (todos) {
+            this.todos = JSON.parse(todos);
+        }
+    };
 
     addTodo = (text: string) => {
         this.todos.push({ id: this.nextId++, text, completed: false });
+        this.loadTodos();
     };
 
     updateTodo = (id: number, text: string) => {
