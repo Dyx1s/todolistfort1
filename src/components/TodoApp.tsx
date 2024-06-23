@@ -36,8 +36,8 @@ const TodoApp: React.FC = observer(() => {
         setEditId(0);
         setEditText('');
     }
-    
-  return (
+
+    return (
     <Container>
         <h1>To-do list</h1>
         <TextField
@@ -51,35 +51,35 @@ const TodoApp: React.FC = observer(() => {
         <Button onClick={handleAddTodo}>Add task</Button>
         <List>
         {todoStore.todos.map((todo) => (
-          <ListItem key={todo.id}>
+            <ListItem key={todo.id}>
             <Checkbox checked={todo.completed} onChange={() => todoStore.toggleTodo(todo.id)} />
             {editId === todo.id ? (
-              <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
                 <TextField
-                  value={editText}
-                  onChange={(e) => setEditText(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleUpdateTodo(todo.id)}
-                  fullWidth
+                    value={editText}
+                    onChange={(e) => setEditText(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleUpdateTodo(todo.id)}
+                    fullWidth
                 />
                 <Button onClick={() => handleUpdateTodo(todo.id)}>Save</Button>
                 <Button onClick={handleCancelEdit}>Cancel</Button>
-              </div>
+                </div>
             ) : (
-              <ListItemText primary={todo.text} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }} />
+                <ListItemText primary={todo.text} style={{ textDecoration: todo.completed ? 'line-through' : 'none' }} />
             )}
             {editId !== todo.id && (
-              <IconButton edge="end" onClick={() => handleEditButtonClick(todo.id, todo.text)}>
+                <IconButton edge="end" onClick={() => handleEditButtonClick(todo.id, todo.text)}>
                 <EditIcon />
-              </IconButton>
+                </IconButton>
             )}
             <IconButton edge="end" onClick={() => todoStore.deleteTodo(todo.id)}>
-              <DeleteIcon />
+                <DeleteIcon />
             </IconButton>
-          </ListItem>
+            </ListItem>
         ))}
-      </List>
+        </List>
     </Container>
-  );
+    );
 });
 
 export default TodoApp;
