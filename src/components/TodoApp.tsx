@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import todoStore from '../store/todoStore';
-import { Container, TextField, Button, List, ListItem, ListItemText, IconButton, Checkbox } from '@mui/material';
+import { Container, TextField, Button, List, ListItem, ListItemText, IconButton, Checkbox, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
@@ -11,11 +11,15 @@ const TodoApp: React.FC = observer(() => {
     const [task, setTask] = useState('');
     const [editId, setEditId] = useState(0);
     const [editText, setEditText] = useState('');
+    const [taskError, setTaskError] = useState(false);
 
     const handleAddTodo = () => {
         if (task) {
             todoStore.addTodo(task);
             setTask('')
+            setTaskError(false)
+        } else {
+            setTaskError(true)
         }
     };
 
@@ -45,9 +49,10 @@ const TodoApp: React.FC = observer(() => {
             variant="outlined"
             fullWidth
             value={task}
-            onChange={(e) => setTask(e.target.value)}
+            onChange={(e) => setTask(e.target.value) }
             onKeyDown={(e) => e.key === 'Enter' && handleAddTodo()}
         />
+        {taskError && <Typography color="error">Заполните поле</Typography>}
 
         <Button onClick={handleAddTodo}>Add task</Button>
 

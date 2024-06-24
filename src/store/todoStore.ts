@@ -55,9 +55,8 @@ class TodoStore {
         const todo = this.todos.find(todo => todo.id === id);
         if (todo) {
             todo.completed = !todo.completed;
-            this.saveTodos();
         }
-    };
+    }
 }
 
 const todoStore = new TodoStore();
